@@ -4,7 +4,7 @@ export const PLUGIN = {
 }
 
 export enum CONFIG {
-	WAKATIME_API_ENDPOINT = 'https://api.wakatime.com/api/v1/users/current/heartbeats', // ?api_key=... will be append at the end
+	WAKATIME_API_ENDPOINT = 'https://api.wakatime.com/api/v1', // ?api_key=... will be append at the end
 	STORAGE_API_URL = 'secure_wakatime_api_url',
 	STORAGE_PLUGIN_ENABLED = 'secure_wakatime_enabled',
 	STORAGE_API_KEY = 'secure_wakatime_key',
@@ -19,8 +19,10 @@ export enum ELEMENTS {
 	API_HOSTNAME = 'waka_api_hostname',
 	API_PROJECTNAME = 'waka_api_projectname',
 	API_KEY_SAVE_BTN = 'waka_submitkey',
-	CONFIG_RESET_BTN = 'waka_reset_config',
-	CONFIG_SAVE_BTN = 'waka_save_config',
+	API_URL_RESET_BTN = 'api_url_reset',
+	API_URL_SAVE_BTN = 'api_url_save',
+	CONFIG_RESET_BTN = 'config_reset',
+	CONFIG_SAVE_BTN = 'config_save',
 	INPUT_ERROR_MESSAGE = 'waka_error_msg',
 	API_CONNECTION_STATUS = 'connectionStatus',
 	EXTENSION_ENABLED_CHECKBOX = 'waka_enabled',
@@ -36,3 +38,8 @@ export enum STATUS {
 	DISCONNECTED,
 	CONNECTED,
 }
+
+// TODO:
+// Get active document name
+// Remove manual project name input
+

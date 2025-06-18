@@ -44,11 +44,11 @@
 
 			<div class="field-group">
 				<div class="field-header">
-					<sp-field-label for="waka_key">Your API key</sp-field-label>
+					<sp-field-label for="waka_key">API key</sp-field-label>
 					<sp-button id="paste_key" size="s" variant="secondary">Paste</sp-button>
 				</div>
 				<div class="field-inputs">
-					<sp-textfield id="waka_key" type="password" placeholder="API key (waka_)"></sp-textfield>
+					<sp-textfield id="waka_key" type="password" placeholder="Your API key"></sp-textfield>
 					<sp-button id="waka_submitkey" size="m" variant="accent">Save</sp-button>
 				</div>
 			</div>
@@ -60,23 +60,27 @@
 					<sp-field-label for="waka_api_url">API URL</sp-field-label>
 					<sp-button id="paste_url" size="s" variant="secondary">Paste</sp-button>
 				</div>
-				<sp-textfield
-					id="waka_api_url"
-					placeholder="https://api.wakatime.com/api/v1"
-				></sp-textfield>
+
+				<div class="field-inputs">
+					<sp-textfield
+						id="waka_api_url"
+						placeholder="https://api.wakatime.com/api/v1"
+					></sp-textfield>
+				</div>
+			</div>
+			<div class="button-group">
+				<sp-button id="api_url_reset" variant="secondary" size="m">Reset URL</sp-button>
+				<sp-button id="api_url_save" variant="accent" size="m">Save URL</sp-button>
 			</div>
 
 			<div id="waka_error_msg"></div>
 
-			<h5>Plugin Configuration</h5>
 			<sp-divider size="s"></sp-divider>
 
-			<sp-checkbox id="waka_enabled" size="m" checked> Plugin enabled </sp-checkbox>
+			<h4>Plugin Configuration</h4>
 
-			<div>
-				<sp-field-label for="waka_api_hostname"> Project name </sp-field-label>
-				<sp-textfield id="waka_api_projectname" placeholder="Default: Adobe ..."></sp-textfield>
-			</div>
+			<sp-field-label for="waka_api_hostname"> Project name </sp-field-label>
+			<sp-textfield id="waka_api_projectname" placeholder="Default: Adobe ..."></sp-textfield>
 
 			<% if(htmlWebpackPlugin.options.isUXP) {%>
 			<div>
@@ -87,10 +91,14 @@
 			</div>
 			<% } %>
 
-			<footer class="row">
-				<sp-button id="waka_reset_config" variant="secondary">Reset</sp-button>
-				<sp-button id="waka_save_config" variant="accent">Save</sp-button>
-			</footer>
+			<sp-checkbox id="waka_enabled" size="m" checked> Plugin enabled </sp-checkbox>
+
+			<div class="button-group">
+				<sp-button id="config_reset" variant="secondary" size="m">Reset Config</sp-button>
+				<sp-button id="config_save" variant="accent" size="m">Save Config</sp-button>
+			</div>
+
+			<sp-divider size="s"></sp-divider>
 
 			<div style="flex: 1 1 auto"></div>
 

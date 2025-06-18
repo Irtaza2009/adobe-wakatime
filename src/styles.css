@@ -17,6 +17,7 @@ footer {
 	bottom: 0;
 	overflow: auto;
 	padding: 12px 16px;
+	gap: 8px;
 	display: flex;
 	flex-direction: column;
 	color: var(--spectrum-gray-800);
@@ -90,7 +91,7 @@ body:host-context(.PremierePro) {
 }
 
 .field-group {
-	margin-bottom: 16px;
+	margin-bottom: 4px;
 }
 
 .field-header {
@@ -110,5 +111,33 @@ body:host-context(.PremierePro) {
 
 .field-inputs sp-textfield {
 	flex-grow: 1;
+}
+
+sp-divider {
+	margin: 4px 0 !important;
+}
+
+.button-group {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 100%;
+	margin-top: 8px;
+	margin-bottom: 0;
+}
+
+.button-group sp-button:first-child {
+	margin-right: auto;
+}
+
+.button-group sp-button:last-child {
+	margin-left: auto;
+}
+
+h4 {
+	font-size: 0.8rem;
+	margin: 2px 0 2px 0;
+	font-weight: 700;
+	line-height: 1.25;
 }
 

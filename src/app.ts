@@ -62,6 +62,14 @@ export class WakaTimePlugin {
 			.getElementById(ELEMENTS.EXTENSION_ENABLED_CHECKBOX)
 			?.addEventListener('change', this.handleExtensionEnabledClick)
 
+		// API URL listeners
+		document
+			.getElementById(ELEMENTS.API_URL_SAVE_BTN)
+			?.addEventListener('click', this.handleApiUrlSaveClick)
+		document
+			.getElementById(ELEMENTS.API_URL_RESET_BTN)
+			?.addEventListener('click', this.handleApiUrlResetClick)
+
 		document
 			.getElementById(ELEMENTS.CONFIG_SAVE_BTN)
 			?.addEventListener('click', this.handleConfigSaveClick)
@@ -96,4 +104,16 @@ export class WakaTimePlugin {
 		Storage.manageStorage(true)
 		this.init()
 	}
+
+	private static handleApiUrlSaveClick = (): void => {
+		Storage.saveApiUrl()
+		// Add visual feedback if needed
+	}
+
+	private static handleApiUrlResetClick = (): void => {
+		const urlInput = document.getElementById(ELEMENTS.API_URL_INPUT) as HTMLInputElement
+		urlInput.value = CONFIG.WAKATIME_API_ENDPOINT
+		Storage.saveApiUrl()
+	}
 }
+

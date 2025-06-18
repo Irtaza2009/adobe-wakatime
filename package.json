@@ -1,7 +1,7 @@
 {
-  "name": "wakatime-photoshop-plugin",
+  "name": "wakatime-adobe-plugin",
   "version": "1.2.1",
-  "description": "Wakatime plugin to track time spend on Photoshop",
+  "description": "Wakatime plugin to track time spend on Adobe applications.",
   "scripts": {
     "dev:uxp": "cross-env TYPE=uxp webpack",
     "dev:cep": "cross-env TYPE=cep webpack",
