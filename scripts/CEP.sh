@@ -3,7 +3,7 @@
 # This script assumes a linux environment
 
 # ***** Update the extension path to your own ***
-# ***** replace <user>. By default the path is for Windows ***
+
 extension="/Users/admin/Library/Application Support/Adobe/CEP/extensions" 
 cwd=$(pwd)
 

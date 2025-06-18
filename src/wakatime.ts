@@ -18,9 +18,9 @@ export const sendHeartbeat = async (data: HeartbeatData): Promise<STATUS> => {
 
 	const project = Storage.getProjectName()
 
-	const apiUrl = Storage.getApiUrl();
+	const apiUrl = Storage.getApiUrl()
 
-	const response = await fetch(`${apiUrl}?api_key=${apiKey}`, {
+	const response = await fetch(`${apiUrl}/users/current/heartbeats?api_key=${apiKey}`, {
 		method: 'POST',
 		credentials: 'omit',
 		redirect: 'follow',
@@ -58,3 +58,4 @@ export const sendHeartbeat = async (data: HeartbeatData): Promise<STATUS> => {
 
 	return response
 }
+

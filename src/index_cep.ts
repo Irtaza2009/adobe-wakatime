@@ -153,3 +153,22 @@ csInterface.addEventListener(CSInterface.THEME_COLOR_CHANGED_EVENT, updateTheme,
 
 console.log('Host environment:', csInterface.getHostEnvironment())
 
+const pasteToInput = async (inputId: string) => {
+	try {
+		const text = await navigator.clipboard.readText()
+		const tf = document.querySelector(`#${inputId}`) as HTMLElement & { value?: string }
+		const input = tf?.shadowRoot?.querySelector('input') as HTMLInputElement
+		if (input) {
+			input.focus()
+			input.value = text
+			// Dispatch input event to notify any listeners
+			input.dispatchEvent(new Event('input', { bubbles: true }))
+		}
+	} catch (e) {
+		console.warn('Clipboard read failed:', e)
+	}
+}
+
+document.getElementById('paste_key')?.addEventListener('click', () => pasteToInput('waka_key'))
+document.getElementById('paste_url')?.addEventListener('click', () => pasteToInput('waka_api_url'))
+
