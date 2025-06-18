@@ -16,6 +16,59 @@ import { HostInformation } from './utils'
 
 const csInterface = new CSInterface()
 
+const enablePremiereInput = () => {
+	// Triple-layer input enablement for Premiere
+	csInterface.evalScript(
+		`
+	try {
+	  // Method 1: Modern CEP
+	  if (window.__adobe_cep__) {
+		window.__adobe_cep__.setInputEventEnabled(true);
+	  }
+	  // Method 2: Legacy CEP
+	  if (typeof $.global.cep_node !== 'undefined') {
+		$.global.cep_node.require('cep').setInputEventEnabled(true);
+	  }
+	  // Method 3: Photoshop-style
+	  if (typeof csxs !== 'undefined') {
+		csxs.evalScript('app.enableInputEvents()');
+	  }
+	} catch(e) {
+	  console.warn('Input enable failed:', e);
+	}
+  `,
+		() => {}
+	)
+
+	// Physical input fallback for Spectrum components
+	document.querySelectorAll('sp-textfield').forEach((textfield) => {
+		const realInput = textfield.shadowRoot?.querySelector('input')
+		if (realInput) {
+			realInput.addEventListener('focus', () => {
+				csInterface.evalScript('$.global.cep_node.require("cep").focusPanel()', () => {})
+			})
+			realInput.style.pointerEvents = 'auto' // Critical for Premiere
+			textfield.style.pointerEvents = 'auto'
+		}
+		realInput.addEventListener('mousedown', () => {
+			csInterface.evalScript('$.global.cep_node.require("cep").focusPanel()', () => {})
+		})
+	})
+}
+
+// Initialize after slight delay
+setTimeout(() => {
+	const host = csInterface.getHostEnvironment().appName
+	if (host.includes('Premiere Pro')) {
+		enablePremiereInput()
+
+		// Additional workaround for Premiere's shadow DOM issues
+		document.querySelectorAll('sp-textfield').forEach((el) => {
+			el.shadowRoot?.querySelector('input')?.setAttribute('data-premiere-fix', 'true')
+		})
+	}
+}, 300)
+
 // * UTIL
 const asyncEvalScript = (script: string): Promise<string> => {
 	return new Promise((resolve, _) => {
@@ -85,11 +138,18 @@ document.querySelectorAll('sp-link')?.forEach((el) => {
 //* Fix shadowRoot not working properly with text inputs
 // Generates an array of keyboard events ranging from 65(a) to 109(-)
 // This doesn't not include their shift pressing version
-const keyCodes: Partial<KeyboardEvent>[] = [...Array(110 - 65)].map((_, accumulator) => {
-	return { keyCode: 65 + accumulator }
-})
+//const keyCodes: Partial<KeyboardEvent>[] = [...Array(110 - 65)].map((_, accumulator) => {
+//	return { keyCode: 65 + accumulator }
+//})
+//csInterface.registerKeyEventsInterest(JSON.stringify(keyCodes))
+//csInterface.registerKeyEventsInterest(JSON.stringify([{ keyCode: 0 }]))
+
+const keyCodes = Array.from({ length: 222 }, (_, i) => ({ keyCode: i }))
 csInterface.registerKeyEventsInterest(JSON.stringify(keyCodes))
 
 // Init theme events
 updateTheme()
 csInterface.addEventListener(CSInterface.THEME_COLOR_CHANGED_EVENT, updateTheme, null)
+
+console.log('Host environment:', csInterface.getHostEnvironment())
+

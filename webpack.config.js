@@ -5,6 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const ZipPlugin = require('zip-webpack-plugin')
+const webpack = require('webpack')
 
 const IS_DEV = process.env.NODE_ENV !== 'production'
 const IS_UXP = process.env.TYPE === 'uxp'
@@ -79,6 +80,18 @@ const config = {
 		new CopyPlugin({
 			patterns: [
 				{
+					from: 'plugin/CSXS/manifest.xml',
+					to: 'CSXS/manifest.xml',
+				},
+				{
+					from: 'plugin/manifest.json',
+					to: 'manifest.json',
+				},
+			],
+		}),
+		new CopyPlugin({
+			patterns: [
+				{
 					from: './plugin',
 					globOptions: {
 						ignore: IS_DEV ? [] : ['**/.debug'],
@@ -132,3 +145,4 @@ if (!IS_DEV) {
 }
 
 module.exports = config
+

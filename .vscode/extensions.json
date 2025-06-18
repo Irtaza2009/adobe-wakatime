@@ -1,9 +1,0 @@
-{
-	"recommendations": [
-		"esbenp.prettier-vscode",
-		"christian-kohler.path-intellisense",
-		"dbaeumer.vscode-eslint",
-		"steoates.autoimport",
-		"pmneo.tsimporter"
-	]
-}

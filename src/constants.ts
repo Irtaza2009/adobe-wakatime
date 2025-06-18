@@ -5,6 +5,7 @@ export const PLUGIN = {
 
 export enum CONFIG {
 	WAKATIME_API_ENDPOINT = 'https://api.wakatime.com/api/v1/users/current/heartbeats', // ?api_key=... will be append at the end
+	STORAGE_API_URL = 'secure_wakatime_api_url',
 	STORAGE_PLUGIN_ENABLED = 'secure_wakatime_enabled',
 	STORAGE_API_KEY = 'secure_wakatime_key',
 	STORAGE_MACHINE = 'secure_wakatime_machine',
@@ -14,6 +15,7 @@ export enum CONFIG {
 
 export enum ELEMENTS {
 	API_KEY_INPUT = 'waka_key',
+	API_URL_INPUT = 'waka_api_url',
 	API_HOSTNAME = 'waka_api_hostname',
 	API_PROJECTNAME = 'waka_api_projectname',
 	API_KEY_SAVE_BTN = 'waka_submitkey',

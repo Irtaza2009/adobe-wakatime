@@ -69,3 +69,22 @@ footer {
 	border: 2px solid currentColor;
 	text-align: center;
 }
+
+/* Force input styling for Premiere */
+body:host-context(.PremierePro) {
+	sp-textfield {
+		--spectrum-alias-border-size-thin: 2px;
+		--spectrum-textfield-border-color: var(--spectrum-gray-500);
+
+		input {
+			pointer-events: auto !important;
+			-webkit-user-select: text !important;
+			user-select: text !important;
+		}
+	}
+
+	/* Fix focus states */
+	sp-textfield:focus-within {
+		outline: 2px solid var(--spectrum-blue-800) !important;
+	}
+}

@@ -3,9 +3,7 @@
 	<head>
 		<% if(htmlWebpackPlugin.options.isCEP) {%>
 		<script defer src="lib/CSInterface.js"></script>
-		<% } %>
-		<%= htmlWebpackPlugin.tags.headTags %>
-		<% if(htmlWebpackPlugin.options.isUXP) {%>
+		<% } %> <%= htmlWebpackPlugin.tags.headTags %> <% if(htmlWebpackPlugin.options.isUXP) {%>
 		<style>
 			.wrapper {
 				background-color: var(--uxp-host-background-color) !important;
@@ -27,7 +25,11 @@
 	</head>
 	<body>
 		<sp-theme class="wrapper" theme="spectrum" color="dark" scale="medium">
-			<sp-link id="waka_update_available" href="https://github.com/ZEBAS204/adobe-wakatime/releases/latest" quiet>
+			<sp-link
+				id="waka_update_available"
+				href="https://github.com/ZEBAS204/adobe-wakatime/releases/latest"
+				quiet
+			>
 				A new version is available!
 			</sp-link>
 
@@ -51,23 +53,25 @@
 					<sp-button id="waka_submitkey" size="m" variant="accent">Save</sp-button>
 				</div>
 			</div>
+
+			<div>
+				<sp-field-label for="waka_api_url">API URL</sp-field-label>
+				<sp-textfield
+					id="waka_api_url"
+					placeholder="https://api.wakatime.com/api/v1/users/current/heartbeats"
+				></sp-textfield>
+			</div>
+
 			<div id="waka_error_msg"></div>
 
 			<h5>Plugin Configuration</h5>
 			<sp-divider size="s"></sp-divider>
 
-			<sp-checkbox id="waka_enabled" size="m" checked>
-				Plugin enabled
-			</sp-checkbox>
+			<sp-checkbox id="waka_enabled" size="m" checked> Plugin enabled </sp-checkbox>
 
 			<div>
-				<sp-field-label for="waka_api_hostname">
-					Project name
-				</sp-field-label>
-				<sp-textfield
-					id="waka_api_projectname"
-					placeholder="Default: Adobe ..."
-				></sp-textfield>
+				<sp-field-label for="waka_api_hostname"> Project name </sp-field-label>
+				<sp-textfield id="waka_api_projectname" placeholder="Default: Adobe ..."></sp-textfield>
 			</div>
 
 			<% if(htmlWebpackPlugin.options.isUXP) {%>
@@ -75,11 +79,8 @@
 				<sp-field-label for="waka_api_hostname">
 					Machine Name (copy from dashboard)
 				</sp-field-label>
-				<sp-textfield
-					id="waka_api_hostname"
-					placeholder="Default: Unknown"
-				></sp-textfield>
-				</div>
+				<sp-textfield id="waka_api_hostname" placeholder="Default: Unknown"></sp-textfield>
+			</div>
 			<% } %>
 
 			<footer>
@@ -92,11 +93,10 @@
 
 			<sp-body class="small_text" size="xs">
 				<span>You can find your API key at</span>
-				<sp-link href="https://wakatime.com/api-key" quiet>
-					https://wakatime.com/api-key
-				</sp-link>
+				<sp-link href="https://wakatime.com/api-key" quiet> https://wakatime.com/api-key </sp-link>
 			</sp-body>
 		</sp-theme>
 		<%= htmlWebpackPlugin.tags.bodyTags %>
 	</body>
 </html>
+

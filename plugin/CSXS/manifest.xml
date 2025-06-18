@@ -25,6 +25,9 @@
         </LocaleList>
         <RequiredRuntimeList>
             <RequiredRuntime Name="CSXS" Version="11.0" />
+            <RequiredPrivileges>
+                <Data>Clipboard</Data>
+            </RequiredPrivileges>
         </RequiredRuntimeList>
     </ExecutionEnvironment>
     <DispatchInfoList>
@@ -35,6 +38,8 @@
                     <CEFCommandLine>
                         <Parameter>--enable-nodejs</Parameter>
                         <Parameter>--mixed-context</Parameter>
+                        <Parameter>--enable-input-event-bridge</Parameter>
+                        <Parameter>--allow-file-access-from-files</Parameter>
                     </CEFCommandLine>
                 </Resources>
                 <Lifecycle>
@@ -75,4 +80,9 @@
             </DispatchInfo>
         </Extension>
     </DispatchInfoList>
+    <Permissions>
+        <Permission>InputEvent</Permission>
+        <Permission>NetworkState</Permission>
+        <Permission>LocalFileSystem</Permission>
+    </Permissions>
 </ExtensionManifest>

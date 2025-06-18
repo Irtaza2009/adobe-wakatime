@@ -4,7 +4,7 @@
 	"version": "1.0.0",
 	"main": "index.html",
 	"host": {
-		"app": "PS",
+		"app": ["PPRO", "PHXS"],
 		"minVersion": "23.0.0",
 		"data": {
 			"loadEvent": "startup"
@@ -20,6 +20,22 @@
 		},
 		"launchProcess": {
 			"schemes": ["https"]
+		},
+		"localFileSystem": "readwrite",
+		"webview": {
+			"allow": true
+		},
+		"clipboard": "readwrite",
+		"inputEvents": true
+	},
+	"extensions": {
+		"cep": {
+			"events": {
+				"all": true
+			},
+			"persistent": true,
+			"autoVisible": true,
+			"parameters": "--enable-nodejs --mixed-context"
 		}
 	},
 	"entrypoints": [
@@ -71,8 +87,14 @@
 			"height": 48,
 			"path": "icons/plugin-icon.png",
 			"scale": [1, 2],
-			"theme": ["darkest", "dark", "medium", "lightest", "light", "all"],
+			"theme": ["all"],
 			"species": ["pluginList"]
 		}
-	]
+	],
+	"build": {
+		"cep": {
+			"enableInputEventBridge": true
+		}
+	}
 }
+

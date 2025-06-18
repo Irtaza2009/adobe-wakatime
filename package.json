@@ -45,6 +45,7 @@
     "@spectrum-web-components/link": "^0.33.2",
     "@spectrum-web-components/status-light": "^0.33.2",
     "@spectrum-web-components/textfield": "^0.33.2",
-    "@spectrum-web-components/theme": "^0.33.2"
+    "@spectrum-web-components/theme": "^0.33.2",
+    "cep-interface": "^0.6.0"
   }
 }

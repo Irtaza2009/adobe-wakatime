@@ -18,7 +18,9 @@ export const sendHeartbeat = async (data: HeartbeatData): Promise<STATUS> => {
 
 	const project = Storage.getProjectName()
 
-	const response = await fetch(`${CONFIG.WAKATIME_API_ENDPOINT}?api_key=${apiKey}`, {
+	const apiUrl = Storage.getApiUrl();
+
+	const response = await fetch(`${apiUrl}?api_key=${apiKey}`, {
 		method: 'POST',
 		credentials: 'omit',
 		redirect: 'follow',

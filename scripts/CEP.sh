@@ -4,7 +4,7 @@
 
 # ***** Update the extension path to your own ***
 # ***** replace <user>. By default the path is for Windows ***
-extension="C:\Users\<user>\AppData\Roaming\Adobe\CEP\extensions"
+extension="/Users/admin/Library/Application Support/Adobe/CEP/extensions" 
 cwd=$(pwd)
 
 echo "Building..."

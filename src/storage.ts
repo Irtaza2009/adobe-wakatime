@@ -3,11 +3,57 @@ import { CONFIG, ELEMENTS } from './constants'
 export default class Storage {
 	private static API_CACHE: string | null
 
+	public static saveApiUrl(): void {
+		const urlInput = document.getElementById(ELEMENTS.API_URL_INPUT) as HTMLInputElement;
+		const apiUrl = urlInput?.value?.trim();
+
+		if (!apiUrl) {
+		console.log('[WakaTime] Cleared API URL');
+		urlInput.value = '';
+		localStorage.removeItem(CONFIG.STORAGE_API_URL);
+		return;
+		}
+
+		// Basic URL validation
+		try {
+		new URL(apiUrl);
+		console.log(`[WakaTime] Saving API URL: "${apiUrl}"`);
+		localStorage.setItem(CONFIG.STORAGE_API_URL, apiUrl);
+		} catch (e) {
+		console.error('[WakaTime] Invalid API URL', e);
+		urlInput.setAttribute('invalid', 'true');
+		}
+
+		urlInput.setAttribute('valid', 'true');
+		setTimeout(() => {
+			urlInput.removeAttribute('valid');
+		}, 1500);
+  }
+
+  public static getApiUrl(): string {
+    const savedUrl = localStorage.getItem(CONFIG.STORAGE_API_URL);
+  const urlInput = document.getElementById(ELEMENTS.API_URL_INPUT) as HTMLInputElement;
+  
+  if (savedUrl) {
+    if (urlInput && urlInput.value !== savedUrl) {
+      urlInput.value = savedUrl;
+    }
+    return savedUrl;
+  }
+  
+  // Only set default if input is empty
+  if (urlInput && !urlInput.value) {
+    urlInput.value = CONFIG.WAKATIME_API_ENDPOINT;
+  }
+  return CONFIG.WAKATIME_API_ENDPOINT;
+  }
+
 	public static restoreConfigs(): void {
 		// The idea is to sync the saved settings with the text inputs at startup
 		Storage.getApiKey()
 		Storage.getProjectName()
 		Storage.getMachineName()
+		Storage.getApiUrl();
 	}
 
 	public static async saveSecureKey(): Promise<void> {
@@ -143,11 +189,15 @@ export default class Storage {
 			const projectNameInput = document.getElementById(ELEMENTS.API_PROJECTNAME) as HTMLInputElement
 			projectNameInput.value = ''
 
+			localStorage.removeItem(CONFIG.STORAGE_API_URL);
+      		const apiUrlInput = document.getElementById(ELEMENTS.API_URL_INPUT) as HTMLInputElement;
+      		if (apiUrlInput) apiUrlInput.value = '';
 			return
 		}
 
 		console.log('[Wakatime] Saving configuration...')
 		Storage.saveMachine()
 		Storage.saveProjectName()
+		Storage.saveApiUrl();
 	}
 }
