@@ -126,14 +126,34 @@ const updateTheme = () => {
 }
 
 WakaTimePlugin.getActiveFile = async () => {
-	const currentDocument = await asyncEvalScript('app.activeDocument.fullName')
-	// ERROR 1302 === no active document
-	if (currentDocument.startsWith('Error 1302:')) return null
+	const csInterface = new CSInterface()
+	const hostName = csInterface.getHostEnvironment().appName
 
-	const realPath = await asyncEvalScript(`File('${currentDocument}').fsName`)
-	const normalizedPath = realPath.replace(/\\/g, '/')
+	let script = ''
 
-	console.log('Documents:', currentDocument, normalizedPath)
+	switch (hostName) {
+		case 'PHXS': // Photoshop
+		case 'PHSP':
+			script = 'app.activeDocument.fullName.fsName'
+			break
+		case 'ILST': // Illustrator
+			script = 'app.activeDocument.fullName'
+			break
+		case 'PPRO': // Premiere Pro
+			script = `app.project.name` // this gets project name, not file path
+			break
+		default:
+			console.warn('[WakaTime] No script for host:', hostName)
+			return null
+	}
+
+	const result = await asyncEvalScript(script)
+	if (!result || result.includes('EvalScript error')) return null
+
+	const normalizedPath = result.replace(/\\/g, '/')
+	console.log('[WakaTime] Raw currentDocument:', result)
+	console.log('[WakaTime] Normalized path:', normalizedPath)
+
 	return normalizedPath
 }
 
@@ -166,6 +186,4 @@ csInterface.registerKeyEventsInterest(JSON.stringify(keyCodes))
 // Init theme events
 updateTheme()
 csInterface.addEventListener(CSInterface.THEME_COLOR_CHANGED_EVENT, updateTheme, null)
-
-console.log('Host environment:', csInterface.getHostEnvironment())
 

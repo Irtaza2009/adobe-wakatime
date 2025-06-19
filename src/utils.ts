@@ -62,6 +62,7 @@ export class HostInformation {
 	public static PLUGIN_NAME: string
 	public static USER_AGENT: string
 	public static HOST_NAME: string | null
+	public static OS_NAME: string
 
 	public static init_UXP(): void {
 		const { platform, arch } = require('os')
@@ -72,13 +73,18 @@ export class HostInformation {
 		const PLUGIN_NAME = `adobe-${APP_NAME_L}-wakatime/${PLUGIN.VERSION}`
 		// We need to remove any numbers from the platform as win32/win10 is not recognized and will be
 		// labeled as Unknown OS. Wakatime accepts {os_name}_{os_version} format.
-		const AGENT_OS = `${platform().replace(/\d/g, '')}_${arch()}`
-		const USER_AGENT = `${APP_NAME}/${host.version} ${AGENT_OS} ${PLUGIN_NAME}`
+		const AGENT_OS = `${platform().replace(/\d/g, '')}/${arch()}`
+		const USER_AGENT = `${APP_NAME.replace(' ', '-')}/${host.version} ${AGENT_OS} ${PLUGIN_NAME}`
 
 		this.APP_NAME = APP_NAME
 		this.PLUGIN_NAME = PLUGIN_NAME
 		this.USER_AGENT = USER_AGENT
 		this.HOST_NAME = Storage.getMachineName()
+		this.OS_NAME = platform().startsWith('win')
+			? 'Windows'
+			: platform().startsWith('darwin')
+			? 'macOS'
+			: 'Linux'
 	}
 
 	static init_CEP(): void {
@@ -93,9 +99,9 @@ export class HostInformation {
 				IDSN: 'InDesign',
 				AICY: 'InCopy',
 				ILST: 'Illustrator',
-				PPRO: 'Premiere Pro',
+				PPRO: 'Premiere-Pro',
 				PRLD: 'Prelude',
-				AEFT: 'After Effects',
+				AEFT: 'After-Effects',
 				FLPR: 'Animate',
 				AUDT: 'Audition',
 				DRWV: 'Dreamweaver',
@@ -111,21 +117,27 @@ export class HostInformation {
 
 		const APP_NAME_L = APP_NAME.toLowerCase().replace(' ', '-')
 		const PLUGIN_NAME = `adobe-${APP_NAME_L}-wakatime/${PLUGIN.VERSION}`
-		const AGENT_OS = `${platform().replace(/\d/g, '')}_${arch()}`
+		const AGENT_OS = `${platform().replace(/\d/g, '')}/${arch()}`
 		const USER_AGENT = `${APP_NAME}/${HOST_INFO.appVersion} ${AGENT_OS} ${PLUGIN_NAME}`
 
 		this.APP_NAME = APP_NAME
 		this.PLUGIN_NAME = PLUGIN_NAME
 		this.USER_AGENT = USER_AGENT
 		this.HOST_NAME = hostname()
+		this.OS_NAME = platform().startsWith('win')
+			? 'Windows'
+			: platform().startsWith('darwin')
+			? 'macOS'
+			: 'Linux'
 	}
 }
 
 export const isValidUrl = (urlString: string): boolean => {
-  try {
-    new URL(urlString);
-    return true;
-  } catch (e) {
-    return false;
-  }
-};
+	try {
+		new URL(urlString)
+		return true
+	} catch (e) {
+		return false
+	}
+}
+

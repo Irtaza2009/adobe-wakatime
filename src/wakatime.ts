@@ -1,6 +1,7 @@
 import { CONFIG, STATUS } from './constants'
 import { HostInformation } from './utils'
 import Storage from './storage'
+import { machine } from 'os'
 
 interface HeartbeatData {
 	file: string
@@ -33,6 +34,14 @@ export const sendHeartbeat = async (data: HeartbeatData): Promise<STATUS> => {
 			category: 'designing',
 			language: HostInformation.APP_NAME,
 			plugin: HostInformation.PLUGIN_NAME,
+			editor: HostInformation.APP_NAME || 'Adobe',
+			operating_system: HostInformation.OS_NAME || navigator.platform || 'Unknown',
+			machine: HostInformation.HOST_NAME || machine(),
+			line_additions: 0,
+			line_deletions: 0,
+			lineno: 1,
+			cursorpos: 1,
+			user_agent: HostInformation.USER_AGENT,
 		}),
 		headers: {
 			'Content-Type': 'application/json',
@@ -45,6 +54,7 @@ export const sendHeartbeat = async (data: HeartbeatData): Promise<STATUS> => {
 	})
 		.then((res) => {
 			console.log('[WakaTime] Heartbeat received', res)
+			console.log('[WakaTime] User-Agent:', HostInformation.USER_AGENT)
 			if (res.status === 500) return STATUS.SERVER_ERROR
 			else if (res.status === 401 || res.status === 403) return STATUS.INVALID_API_KEY
 			else if (!res.ok) return STATUS.BAD_REQUEST
