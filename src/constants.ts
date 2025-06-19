@@ -4,7 +4,7 @@ export const PLUGIN = {
 }
 
 export enum CONFIG {
-	WAKATIME_API_ENDPOINT = 'https://api.wakatime.com/api/v1', // ?api_key=... will be append at the end
+	WAKATIME_API_ENDPOINT = 'https://api.wakatime.com/api/v1',
 	STORAGE_API_URL = 'secure_wakatime_api_url',
 	STORAGE_PLUGIN_ENABLED = 'secure_wakatime_enabled',
 	STORAGE_API_KEY = 'secure_wakatime_key',
@@ -38,8 +38,4 @@ export enum STATUS {
 	DISCONNECTED,
 	CONNECTED,
 }
-
-// TODO:
-// Get active document name
-// Remove manual project name input
 

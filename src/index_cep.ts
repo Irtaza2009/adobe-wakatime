@@ -14,7 +14,23 @@ import '@spectrum-web-components/link/sp-link.js'
 import { WakaTimePlugin } from './app'
 import { HostInformation } from './utils'
 
+declare global {
+	interface Window {
+		cep: any
+		__adobe_cep__: any
+	}
+}
+
 const csInterface = new CSInterface()
+window.cep = window.__adobe_cep__
+
+if (window.cep) {
+	try {
+		window.cep.clipboard = window.cep.clipboard || {}
+	} catch (e) {
+		console.warn('Failed to initialize CEP clipboard:', e)
+	}
+}
 
 const enablePremiereInput = () => {
 	// Triple-layer input enablement for Premiere
@@ -152,23 +168,4 @@ updateTheme()
 csInterface.addEventListener(CSInterface.THEME_COLOR_CHANGED_EVENT, updateTheme, null)
 
 console.log('Host environment:', csInterface.getHostEnvironment())
-
-const pasteToInput = async (inputId: string) => {
-	try {
-		const text = await navigator.clipboard.readText()
-		const tf = document.querySelector(`#${inputId}`) as HTMLElement & { value?: string }
-		const input = tf?.shadowRoot?.querySelector('input') as HTMLInputElement
-		if (input) {
-			input.focus()
-			input.value = text
-			// Dispatch input event to notify any listeners
-			input.dispatchEvent(new Event('input', { bubbles: true }))
-		}
-	} catch (e) {
-		console.warn('Clipboard read failed:', e)
-	}
-}
-
-document.getElementById('paste_key')?.addEventListener('click', () => pasteToInput('waka_key'))
-document.getElementById('paste_url')?.addEventListener('click', () => pasteToInput('waka_api_url'))
 

@@ -82,6 +82,7 @@
     </DispatchInfoList>
     <Permissions>
         <Permission>InputEvent</Permission>
+        <Permission>Clipboard</Permission>
         <Permission>NetworkState</Permission>
         <Permission>LocalFileSystem</Permission>
     </Permissions>

@@ -195,7 +195,6 @@ export default class Storage {
 		console.log('[Wakatime] Saving configuration...')
 		Storage.saveMachine()
 		Storage.saveProjectName()
-		Storage.saveApiUrl()
 	}
 }
 
