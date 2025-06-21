@@ -22,6 +22,9 @@ export class WakaTimePlugin {
 		clearInterval(this.intervalRef)
 	}
 
+	private static lastSentFile: string | null = null
+	private static lastModifiedTime: number = 0
+
 	public static init(): void {
 		const isDisabled = !Storage.isExtensionEnabled()
 		if (isDisabled) {
@@ -31,25 +34,33 @@ export class WakaTimePlugin {
 		}
 
 		this.intervalRef = setInterval(async () => {
-			console.log('[WakaTime] Created heartbeat interval')
 			if (isDisabled) return
 
-			const activeFile = await this.getActiveFile()
-			console.log('[Wakatime] Active file:', activeFile)
-			if (!activeFile) return
+			const file = await this.getActiveFile()
+			if (!file) return
 
-			const heartbeatResponse = await sendHeartbeat({
-				file: activeFile,
-				time: Date.now(),
-			})
+			try {
+				const stats = require('fs').statSync(file)
+				console.log(stats)
+				const mtimeMs = stats.mtimeMs
 
-			console.log('[Wakatime] Heartbeat response:', heartbeatResponse)
+				if (
+					file !== this.lastSentFile || // new file
+					mtimeMs > this.lastModifiedTime // file has been modified since last
+				) {
+					const heartbeatResponse = await sendHeartbeat({
+						file,
+						time: Date.now(),
+					})
 
-			if (isDisabled) {
-				updateConnectionStatus(STATUS.DISCONNECTED)
-				return
+					this.lastSentFile = file
+					this.lastModifiedTime = mtimeMs
+
+					updateConnectionStatus(heartbeatResponse)
+				}
+			} catch (err) {
+				console.warn('[WakaTime] Could not read file timestamp:', err)
 			}
-			updateConnectionStatus(heartbeatResponse)
 		}, CONFIG.HEARTBEAT_INTERVAL)
 	}
 

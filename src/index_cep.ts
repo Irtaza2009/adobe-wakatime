@@ -129,6 +129,8 @@ WakaTimePlugin.getActiveFile = async () => {
 	const csInterface = new CSInterface()
 	const hostName = csInterface.getHostEnvironment().appName
 
+	console.log('[WakaTime] Getting active file for host:', hostName)
+
 	let script = ''
 
 	switch (hostName) {
@@ -140,7 +142,29 @@ WakaTimePlugin.getActiveFile = async () => {
 			script = 'app.activeDocument.fullName'
 			break
 		case 'PPRO': // Premiere Pro
-			script = `app.project.name` // this gets project name, not file path
+			script = `app.project.path` // this gets project file path, not name
+			break
+		case 'IDSN': // InDesign
+		case 'AICY': // InCopy
+			script = `app.activeDocument.fullName`
+			break
+		case 'PRLD': // Prelude
+			script = `app.project.path`
+			break
+		case 'AEFT': // After Effects
+			script = `app.project.file.fsName`
+			break
+		case 'FLPR': // Animate
+			script = `fl.getDocumentDOM().path`
+			break
+		case 'AUDT': // Audition
+			script = `app.activeSession.path`
+			break
+		case 'DRWV': // Dreamweaver
+			script = `dreamweaver.getDocumentPath("document")`
+			break
+		case 'KBRG': // Bridge
+			script = `app.document.displayPath`
 			break
 		default:
 			console.warn('[WakaTime] No script for host:', hostName)
