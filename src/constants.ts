@@ -10,7 +10,7 @@ export enum CONFIG {
 	STORAGE_API_KEY = 'secure_wakatime_key',
 	STORAGE_MACHINE = 'secure_wakatime_machine',
 	STORAGE_PROJECTNAME = 'secure_wakatime_project_name',
-	HEARTBEAT_INTERVAL = 10000, //* 10sec interval
+	HEARTBEAT_INTERVAL = 30000, //* 30sec interval
 }
 
 export enum ELEMENTS {
