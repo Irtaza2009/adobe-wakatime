@@ -1,5 +1,6 @@
 import { PLUGIN, ELEMENTS, STATUS } from './constants'
 import Storage from './storage'
+import { ProjectTimeTracker } from './storage'
 
 export const updateConnectionStatus = (status: STATUS) => {
 	const connectionStatus = document.getElementById(ELEMENTS.API_CONNECTION_STATUS)
@@ -139,5 +140,19 @@ export const isValidUrl = (urlString: string): boolean => {
 	} catch (e) {
 		return false
 	}
+}
+
+export const updateProjectTimeDisplay = (project: string) => {
+	const el = document.getElementById('project-time')
+	if (!el) return
+
+	const ms = ProjectTimeTracker.get(project)
+	const minutes = Math.floor(ms / 60000)
+	const hours = Math.floor(minutes / 60)
+	const mins = minutes % 60
+
+	console.log(`[WakaTime] Project time for ${project}: ${ms}ms (${hours}h ${mins}m)`)
+
+	el.textContent = `Time spent: ${hours}h ${mins}m`
 }
 

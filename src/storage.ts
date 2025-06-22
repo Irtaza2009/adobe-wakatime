@@ -198,3 +198,19 @@ export default class Storage {
 	}
 }
 
+export const ProjectTimeTracker = {
+	get(project: string): number {
+		const raw = localStorage.getItem(`wakatime_project_time_${project}`)
+		return raw ? parseInt(raw, 10) : 0
+	},
+
+	set(project: string, timeInMs: number): void {
+		localStorage.setItem(`wakatime_project_time_${project}`, timeInMs.toString())
+	},
+
+	increment(project: string, deltaMs: number): void {
+		const current = this.get(project)
+		this.set(project, current + deltaMs)
+	},
+}
+

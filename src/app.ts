@@ -1,8 +1,9 @@
 import './styles.css'
 import { ELEMENTS, CONFIG, STATUS } from './constants'
-import { updateConnectionStatus, isLastestVersion } from './utils'
+import { updateConnectionStatus, isLastestVersion, updateProjectTimeDisplay } from './utils'
 import { sendHeartbeat } from './wakatime'
 import Storage from './storage'
+import { ProjectTimeTracker } from './storage'
 
 export class WakaTimePlugin {
 	private static intervalRef: NodeJS.Timer | null = null
@@ -24,6 +25,7 @@ export class WakaTimePlugin {
 
 	private static lastSentFile: string | null = null
 	private static lastModifiedTime: number = 0
+	private static lastHeartbeatTime: number | null = null
 
 	public static init(): void {
 		const isDisabled = !Storage.isExtensionEnabled()
@@ -34,29 +36,45 @@ export class WakaTimePlugin {
 		}
 
 		this.intervalRef = setInterval(async () => {
-			if (isDisabled) return
+			if (!Storage.isExtensionEnabled()) return
 
 			const file = await this.getActiveFile()
 			if (!file) return
 
+			const now = Date.now()
+			const project = Storage.getProjectName() || 'Unknown Project'
+
 			try {
-				const stats = require('fs').statSync(file)
-				console.log(stats)
+				const fs = require('fs')
+				const stats = fs.statSync(file)
 				const mtimeMs = stats.mtimeMs
 
-				if (
-					file !== this.lastSentFile || // new file
-					mtimeMs > this.lastModifiedTime // file has been modified since last
-				) {
+				const isNewFile = file !== this.lastSentFile
+				const wasModified = mtimeMs > this.lastModifiedTime
+
+				if (isNewFile || wasModified) {
+					// ⏱ Track time spent
+					const previousHeartbeat = this.lastHeartbeatTime
+					this.lastHeartbeatTime = now
+
+					if (previousHeartbeat) {
+						const delta = now - previousHeartbeat
+						if (delta < CONFIG.HEARTBEAT_INTERVAL * 5) {
+							ProjectTimeTracker.increment(project, delta)
+							console.log(`[WakaTime] Incremented project time for "${project}" by ${delta}ms`)
+						}
+					}
+
 					const heartbeatResponse = await sendHeartbeat({
 						file,
-						time: Date.now(),
+						time: now,
 					})
 
 					this.lastSentFile = file
 					this.lastModifiedTime = mtimeMs
 
 					updateConnectionStatus(heartbeatResponse)
+					updateProjectTimeDisplay(project)
 				}
 			} catch (err) {
 				console.warn('[WakaTime] Could not read file timestamp:', err)
