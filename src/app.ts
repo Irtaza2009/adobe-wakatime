@@ -39,6 +39,7 @@ export class WakaTimePlugin {
 	private static lastSentFile: string | null = null
 	private static lastModifiedTime: number = 0
 	private static lastHeartbeatTime: number | null = null
+	private static lastStatus: STATUS = STATUS.DISCONNECTED
 
 	public static init(): void {
 		const isDisabled = !Storage.isExtensionEnabled()
@@ -47,6 +48,8 @@ export class WakaTimePlugin {
 			updateConnectionStatus(STATUS.DISCONNECTED)
 			return
 		}
+
+		this.showCountdown()
 
 		this.intervalRef = setInterval(async () => {
 			if (!Storage.isExtensionEnabled()) return
@@ -65,16 +68,20 @@ export class WakaTimePlugin {
 				const isNewFile = file !== this.lastSentFile
 				const wasModified = mtimeMs > this.lastModifiedTime
 
-				if (isNewFile || wasModified) {
-					// ⏱ Track time spent
+				// Always send heartbeat if last status is not CONNECTED
+				const shouldSendHeartbeat = this.lastStatus !== STATUS.CONNECTED || isNewFile || wasModified
+
+				if (shouldSendHeartbeat) {
 					const previousHeartbeat = this.lastHeartbeatTime
 					this.lastHeartbeatTime = now
 
 					if (previousHeartbeat) {
 						const delta = now - previousHeartbeat
 						if (delta < CONFIG.HEARTBEAT_INTERVAL * 5) {
-							ProjectTimeTracker.increment(project, delta)
-							console.log(`[WakaTime] Incremented project time for "${project}" by ${delta}ms`)
+							if (this.lastStatus === STATUS.CONNECTED) {
+								ProjectTimeTracker.increment(project, delta)
+								console.log(`[WakaTime] Incremented project time for "${project}" by ${delta}ms`)
+							}
 						}
 					}
 
@@ -88,9 +95,17 @@ export class WakaTimePlugin {
 
 					updateConnectionStatus(heartbeatResponse)
 					updateProjectTimeDisplay(project)
+
+					this.lastStatus = heartbeatResponse
+
+					const isConnected = heartbeatResponse === STATUS.CONNECTED
+					this.showCountdownResult(isConnected)
+					if (!isConnected) {
+					}
 				}
 			} catch (err) {
 				console.warn('[WakaTime] Could not read file timestamp:', err)
+				this.lastStatus = STATUS.DISCONNECTED
 			}
 		}, CONFIG.HEARTBEAT_INTERVAL)
 	}
@@ -254,6 +269,46 @@ export class WakaTimePlugin {
 			;(realInput as HTMLInputElement).focus()
 		} else {
 			;(input as HTMLInputElement).focus()
+		}
+	}
+
+	private static countdownTimer: number | null = null
+	private static countdownValue: number = CONFIG.HEARTBEAT_INTERVAL / 1000
+
+	private static showCountdown() {
+		const el = document.getElementById('waka-countdown')
+		if (!el) return
+		this.countdownValue = CONFIG.HEARTBEAT_INTERVAL / 1000 - 2
+		el.style.display = 'inline'
+		el.textContent = `Next check in ${this.countdownValue}s`
+		this.clearCountdown()
+		this.countdownTimer = window.setInterval(() => {
+			this.countdownValue--
+			if (this.countdownValue > 0) {
+				el.textContent = `Next check in ${this.countdownValue}s`
+			}
+		}, 1000)
+	}
+
+	private static showCountdownResult(success: boolean) {
+		const el = document.getElementById('waka-countdown')
+		if (!el) return
+		el.textContent = success ? 'Connected!' : "Couldn't connect"
+		setTimeout(() => {
+			el.style.display = 'none'
+			if (!success) {
+				this.clearCountdown()
+
+				el.style.display = 'none'
+				this.showCountdown()
+			}
+		}, 2000)
+	}
+
+	private static clearCountdown() {
+		if (this.countdownTimer) {
+			clearInterval(this.countdownTimer)
+			this.countdownTimer = null
 		}
 	}
 }
