@@ -25,6 +25,23 @@
 	</head>
 	<body>
 		<sp-theme class="wrapper" theme="spectrum" color="dark" scale="medium">
+			<div id="wakapopup-overlay" style="display: none">
+				<div id="wakapopup-box">
+					<h2>⚠ Important</h2>
+					<p><strong>THE PANEL WINDOW MUST NOT BE CLOSED.</strong></p>
+					<p>
+						✅ You can expand, collapse, dock, or float it, but <strong>do not close</strong> the
+						panel, or WakaTime won't work!
+					</p>
+
+					<label style="display: flex; align-items: center; margin-top: 10px">
+						<input type="checkbox" id="wakatime-hide-warning" />
+						<span style="margin-left: 5px">Do not show again</span>
+					</label>
+
+					<button id="wakatime-popup-ok" style="margin-top: 10px">OK</button>
+				</div>
+			</div>
 			<sp-link
 				id="waka_update_available"
 				href="https://github.com/Irtaza2009/adobe-wakatime/releases/latest"

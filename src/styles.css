@@ -141,3 +141,74 @@ h4 {
 	line-height: 1.25;
 }
 
+#wakapopup-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 9999;
+	background: rgba(30, 30, 30, 0.45); /* subtle dark overlay */
+	backdrop-filter: blur(2px);
+}
+#wakapopup-box {
+	background: var(--spectrum-gray-200, #fff);
+	color: var(--spectrum-gray-800, #222);
+	padding: 28px 24px 20px 24px;
+	border-radius: 12px;
+	max-width: 420px;
+	width: 90vw;
+	box-shadow: 0 4px 32px rgba(0, 0, 0, 0.18), 0 1.5px 6px rgba(0, 0, 0, 0.12);
+	text-align: center;
+	border: 2px solid var(--spectrum-gray-500, #aaa);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#wakapopup-box h2 {
+	margin-top: 0;
+	margin-bottom: 12px;
+	font-size: 1.2rem;
+	color: var(--spectrum-red-900, #d7373f);
+	font-weight: 700;
+	letter-spacing: 0.02em;
+}
+
+#wakapopup-box p {
+	margin: 8px 0;
+	font-size: 1rem;
+	color: var(--spectrum-gray-700, #444);
+}
+
+#wakapopup-box label {
+	margin-top: 16px;
+	font-size: 0.95rem;
+	color: var(--spectrum-gray-600, #555);
+}
+
+#wakatime-popup-ok {
+	margin-top: 18px;
+	padding: 7px 24px;
+	border-radius: 6px;
+	border: none;
+	background: var(--spectrum-blue-800, #1473e6);
+	color: #fff;
+	font-weight: 600;
+	font-size: 1rem;
+	cursor: pointer;
+	transition: background 0.15s;
+	box-shadow: 0 1px 4px rgba(20, 115, 230, 0.08);
+}
+#wakatime-popup-ok:hover {
+	background: var(--spectrum-blue-900, #0d66d0);
+}
+
+#wakapopup-box input[type='checkbox'] {
+	accent-color: var(--spectrum-blue-800, #1473e6);
+	margin-right: 6px;
+}
+

@@ -16,6 +16,19 @@ export class WakaTimePlugin {
 
 		Storage.restoreConfigs()
 		this.init()
+
+		// Show panel warning popup if needed
+		const showWarning = localStorage.getItem('wakapopup-hide') !== 'true'
+		if (showWarning) {
+			document.getElementById('wakapopup-overlay')?.setAttribute('style', 'display: flex')
+		}
+		document.getElementById('wakatime-popup-ok')?.addEventListener('click', () => {
+			const checkbox = document.getElementById('wakatime-hide-warning') as HTMLInputElement
+			if (checkbox?.checked) {
+				localStorage.setItem('wakapopup-hide', 'true')
+			}
+			document.getElementById('wakapopup-overlay')?.setAttribute('style', 'display: none')
+		})
 	}
 
 	public static stop(): void {

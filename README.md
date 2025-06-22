@@ -117,7 +117,7 @@ Then remove the previous `wakatime-adobe` folder and replace it with the latest 
 
 3. Paste your **API key** into the input field and click the **Save** button ([Get your API key here](https://wakatime.com/api-key)).
 
-   > 3.5. If you want to track time using Hackatime, update the API URL to:
+   > 3.5. If you want to track time using [Hackatime](https://hackatime.hackclub.com), update the API URL to:
    > `https://hackatime.hackclub.com/api/hackatime/v1`
 
 <!--
