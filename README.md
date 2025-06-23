@@ -18,6 +18,8 @@
 
 Adobe Wakatime brings [Wakatime](https://wakatime.com/)'s time-tracking functionality to Adobe products.
 
+It works by using Adobe's CEP API to get details like the application name, version, operating system, and machine info. The plugin detects activity by monitoring changes to the active project file every 30 seconds and sending a heartbeat if any change is detected!
+
 **Currently supported features:**
 
 - [x] Tracking time (every 30 seconds)
@@ -33,8 +35,17 @@ Adobe Wakatime brings [Wakatime](https://wakatime.com/)'s time-tracking function
 
 ## Supported Adobe Applications
 
-This plugin uses **Adobe Manifest v5** and **Adobe CEP 11**. Versions after `23.3.0` (UXP 6.0 or higher) should work as intended.
-While older versions may also work, please note that they are not officially supported.
+This plugin uses **Adobe Manifest v5** and **Adobe CEP 11**. Versions after `23.3.0` should work as intended.
+Older versions also work, but please note that they are not officially supported.
+
+### Applications supported:
+
+- Photoshop (only if `legacy` is available)
+- After Effects
+- Audition
+- Illustrator
+- Premiere Pro
+- **Please note:** these applications have been tested with this plugin, there may be other compatible Adobe applications that are not listed here.
 
 ## Installation
 
@@ -61,22 +72,6 @@ While older versions may also work, please note that they are not officially sup
 
 -->
 
-### CEP Compatible Applications
-
-<details open>
-<summary><b>Applications supported:</b></summary>
-<blockquote>
-
-- Photoshop (only if `legacy` is available, you must uncomment `PHSP` & `PHXS` from `CSXS/manifest.xml`. Use [UXP](#uxp-compatible-applications) instead)
-- After Effects
-- Audition
-- Illustrator
-- Premiere Pro
-- **Please note:** these applications have been tested with this plugin, there may be other compatible Adobe applications that are not listed here.
-
-</blockquote>
-</details>
-
 > **Warning**
 > You **must Enable loading of unsigned panels**. You can find the [tutorial on how to do it here](https://github.com/Adobe-CEP/Samples/tree/master/PProPanel#2-enable-loading-of-unsigned-panels).
 
@@ -99,7 +94,7 @@ While older versions may also work, please note that they are not officially sup
 
 ### Updating
 
-To update, follow the same steps as the initial [installation](#cep-compatible-applications).
+To update, follow the same steps as the initial [installation](#installation).
 Then remove the previous `wakatime-adobe` folder and replace it with the latest version from the zip file.
 
 ## Usage
@@ -184,7 +179,7 @@ To use the CEP plugin with the supported Adobe applications (listed in [`plugin/
 _Follow the steps below to correctly debug the plugin:_
 
 1. Locate the `CEP.sh` file in the `scripts` folder.
-2. Open the `CEP.sh` file and specify the destination folder path for the `extensions` folder. Update the script accordingly (see [Installation: CEP Compatible Applications](#cep-compatible-applications) for the default paths)
+2. Open the `CEP.sh` file and specify the destination folder path for the `extensions` folder. Update the script accordingly (see [Installation](#installation) for the default paths)
 3. Save the changes to the `CEP.sh` file.
 4. Run the `CEP.sh` script. It will automatically copy the `dist` folder to the defined path.
 5. Open any of the supported applications and open the plugin panel. Select **Window > Extensions > Wakatime** in the toolbar.
@@ -213,6 +208,8 @@ _Follow the steps below to correctly debug the plugin:_
 
 -->
 
+---
+
 ## Building
 
 To build the CEP plugin, execute the following command:
@@ -221,7 +218,7 @@ To build the CEP plugin, execute the following command:
 npm run build:cep
 ```
 
-This command will compile both the UXP and CEP. The generated files will be packaged into a `zip` file located in the `release` folder as `wakatime-adobe-uxp` and `wakatime-adobe-cep`. Code optimizations will be applied and some debugging files removed.
+This command will compile the CEP. The generated files will be packaged into a `zip` file located in the `release` folder as `wakatime-adobe-cep`. Code optimizations will be applied and some debugging files removed.
 
 > **Warning**
 > Sometimes Typescript loses track of [CSInterface library](./plugin/lib/CSInterface.js). To fix any errors, copy the file from `plugin/lib/CSInterface.js` to the `src` folder.

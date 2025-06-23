@@ -5,9 +5,9 @@
     </ExtensionList>
     <ExecutionEnvironment>
         <HostList>
-            <!-- Uncomment the two next lines if you want to be loaded by Photoshop -->
-            <!--<Host Name="PHSP" Version="[0.0,99.9]"/>-->
-            <!--<Host Name="PHXS" Version="[0.0,99.9]"/>-->
+
+            <Host Name="PHSP" Version="[0.0,99.9]"/>
+            <Host Name="PHXS" Version="[0.0,99.9]"/>
             <Host Name="IDSN" Version="[0.0,99.9]"/>
             <Host Name="AICY" Version="[0.0,99.9]"/>
             <Host Name="ILST" Version="[0.0,99.9]"/>
