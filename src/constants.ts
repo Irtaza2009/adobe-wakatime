@@ -1,6 +1,6 @@
 export const PLUGIN = {
 	VERSION: require('../package.json').version.toString(),
-	UPDATE_URL: 'https://api.github.com/repos/ZEBAS204/adobe-wakatime/releases/latest',
+	UPDATE_URL: 'https://api.github.com/repos/Irtaza2009/adobe-wakatime/releases/latest',
 }
 
 export enum CONFIG {
@@ -10,7 +10,7 @@ export enum CONFIG {
 	STORAGE_API_KEY = 'secure_wakatime_key',
 	STORAGE_MACHINE = 'secure_wakatime_machine',
 	STORAGE_PROJECTNAME = 'secure_wakatime_project_name',
-	HEARTBEAT_INTERVAL = 30000, //* 30sec interval
+	HEARTBEAT_INTERVAL = 10000, //* 10sec interval
 }
 
 export enum ELEMENTS {

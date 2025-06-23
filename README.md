@@ -18,7 +18,7 @@
 
 Adobe Wakatime brings [Wakatime](https://wakatime.com/)'s time-tracking functionality to Adobe products.
 
-It works by using Adobe's CEP API to get details like the application name, version, operating system, and machine info. The plugin detects activity by monitoring changes to the active project file every 30 seconds and sending a heartbeat if any change is detected!
+It works by using Adobe's CEP API to retrieve details like the application name, version, operating system, and machine info. The plugin detects activity by monitoring changes to the active project file every 30 seconds and sending a heartbeat if any change is detected!
 
 **Currently supported features:**
 
@@ -35,8 +35,7 @@ It works by using Adobe's CEP API to get details like the application name, vers
 
 ## Supported Adobe Applications
 
-This plugin uses **Adobe Manifest v5** and **Adobe CEP 11**. Versions after `23.3.0` should work as intended.
-Older versions also work, but please note that they are not officially supported.
+This plugin uses **Adobe Manifest v5** and **Adobe CEP 11**.
 
 ### Applications supported:
 
@@ -102,6 +101,7 @@ Then remove the previous `wakatime-adobe` folder and replace it with the latest 
 > **Important** > **THE PANEL WINDOW MUST NOT BE CLOSED.** > **YOU CAN EXPAND/COLLAPSE/DOCK OR JUST KEEP IT AS A FLOATING WINDOW BUT NEVER CLOSE THE PANEL.**
 
 1. Open the Adobe application after you install this plugin.
+   > **Important** > **A project must be open for the plugin to work! Open a project first before launching the plugin.**
 2. Select in the toolbar:
 
    (CEP) **Window > Extensions > Wakatime**

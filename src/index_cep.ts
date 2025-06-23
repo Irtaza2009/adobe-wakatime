@@ -135,6 +135,8 @@ WakaTimePlugin.getActiveFile = async () => {
 
 	switch (hostName) {
 		case 'PHXS': // Photoshop
+			script = 'app.activeDocument.fullName.fsName'
+			break
 		case 'PHSP':
 			script = 'app.activeDocument.fullName.fsName'
 			break
@@ -145,6 +147,8 @@ WakaTimePlugin.getActiveFile = async () => {
 			script = `app.project.path` // this gets project file path, not name
 			break
 		case 'IDSN': // InDesign
+			script = `app.activeDocument.fullName`
+			break
 		case 'AICY': // InCopy
 			script = `app.activeDocument.fullName`
 			break

@@ -29,6 +29,20 @@ export class WakaTimePlugin {
 			}
 			document.getElementById('wakapopup-overlay')?.setAttribute('style', 'display: none')
 		})
+
+		// Eye icon toggle for API key visibility
+		const toggleBtn = document.getElementById('toggle-key-visibility')
+		const apiKeyInput = document.getElementById('waka_key') as HTMLInputElement
+		const eyeIcon = document.getElementById('eye-icon') as unknown as SVGElement
+		if (toggleBtn && apiKeyInput && eyeIcon) {
+			toggleBtn.addEventListener('click', () => {
+				const isPassword = apiKeyInput.type === 'password'
+				apiKeyInput.type = isPassword ? 'text' : 'password'
+				eyeIcon.innerHTML = isPassword
+					? `<path d="M10 4C5 4 1.73 8.11 1.13 8.93a1.25 1.25 0 0 0 0 1.54C1.73 11.89 5 16 10 16s8.27-4.11 8.87-4.93a1.25 1.25 0 0 0 0-1.54C18.27 8.11 15 4 10 4Zm0 10c-3.31 0-6.13-2.64-7.19-4C3.87 8.64 6.69 6 10 6s6.13 2.64 7.19 4C16.13 11.36 13.31 14 10 14Zm0-7a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm0 5a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z" fill="#888"/>`
+					: `<path d="M2.293 2.293a1 1 0 0 1 1.414 0l14 14a1 1 0 1 1-1.414 1.414l-2.13-2.13C12.77 16.19 11.41 16.5 10 16.5c-5 0-8.27-4.11-8.87-4.93a1.25 1.25 0 0 1 0-1.54c.36-.47 1.09-1.41 2.13-2.36L2.293 2.293ZM10 14.5c1.02 0 2.01-.17 2.93-.48l-1.52-1.52A3 3 0 0 1 7.5 10c0-.41.08-.8.22-1.16l-1.6-1.6C4.87 8.64 2.05 11.36 2.05 11.36 3.11 12.73 6.69 14.5 10 14.5Zm7.95-3.14c-.36.47-1.09 1.41-2.13 2.36l-1.44-1.44c.09-.28.14-.58.14-.89a3 3 0 0 0-3-3c-.31 0-.61.05-.89.14l-1.44-1.44C7.99 5.81 9.36 5.5 10 5.5c3.31 0 6.13 2.64 7.19 4-.36.47-1.09 1.41-2.13 2.36l1.44 1.44c1.04-.95 1.77-1.89 2.13-2.36a1.25 1.25 0 0 0 0-1.54Z" fill="#888"/>`
+			})
+		}
 	}
 
 	public static stop(): void {
@@ -49,7 +63,9 @@ export class WakaTimePlugin {
 			return
 		}
 
-		this.showCountdown()
+		if (this.lastStatus !== STATUS.CONNECTED) {
+			this.showCountdown()
+		}
 
 		this.intervalRef = setInterval(async () => {
 			if (!Storage.isExtensionEnabled()) return
@@ -100,8 +116,6 @@ export class WakaTimePlugin {
 
 					const isConnected = heartbeatResponse === STATUS.CONNECTED
 					this.showCountdownResult(isConnected)
-					if (!isConnected) {
-					}
 				}
 			} catch (err) {
 				console.warn('[WakaTime] Could not read file timestamp:', err)
@@ -286,6 +300,16 @@ export class WakaTimePlugin {
 			this.countdownValue--
 			if (this.countdownValue > 0) {
 				el.textContent = `Next check in ${this.countdownValue}s`
+			} else {
+				this.clearCountdown()
+				el.textContent = 'Reconnecting...'
+				setTimeout(() => {
+					el.textContent = "Couldn't connect"
+					setTimeout(() => {
+						el.style.display = 'none'
+						this.showCountdown()
+					}, 2000)
+				}, 1000)
 			}
 		}, 1000)
 	}
@@ -293,16 +317,19 @@ export class WakaTimePlugin {
 	private static showCountdownResult(success: boolean) {
 		const el = document.getElementById('waka-countdown')
 		if (!el) return
-		el.textContent = success ? 'Connected!' : "Couldn't connect"
-		setTimeout(() => {
-			el.style.display = 'none'
-			if (!success) {
-				this.clearCountdown()
-
+		this.clearCountdown()
+		if (success) {
+			el.textContent = 'Connected!'
+			setTimeout(() => {
+				el.style.display = 'none'
+			}, 1500)
+		} else {
+			el.textContent = "Couldn't connect"
+			setTimeout(() => {
 				el.style.display = 'none'
 				this.showCountdown()
-			}
-		}, 2000)
+			}, 2000)
+		}
 	}
 
 	private static clearCountdown() {
