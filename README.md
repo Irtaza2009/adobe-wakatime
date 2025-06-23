@@ -227,3 +227,13 @@ This command will compile the CEP. The generated files will be packaged into a `
 
 You can find all [CEP 11 documentation here](https://github.com/Adobe-CEP/CEP-Resources/blob/master/CEP_11.x/Documentation/CEP%2011.1%20HTML%20Extension%20Cookbook.md).
 
+---
+
+## Credits
+
+Made with ❤️ by **[Irtaza](https://irtaza.xyz/)**
+
+Please **star** the [repo](https://github.com/Irtaza2009/adobe-wakatime/)!!
+
+**Slack: [@Irtaza](https://hackclub.slack.com/team/U079EQY9X1D)**
+
